@@ -1,6 +1,0 @@
-# Handle JS and CSS files first
-/js/*  /js/:splat  200
-/css/* /css/:splat 200
-
-# Handle all other routes for SPA
-/*    /index.html   200

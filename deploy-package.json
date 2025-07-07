@@ -1,0 +1,12 @@
+{
+  "name": "deploy-script",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy:prepare": "npm install && npm run build:prod",
+    "deploy:netlify": "npm run deploy:prepare && netlify deploy --prod",
+    "deploy:vercel": "npm run deploy:prepare && vercel --prod",
+    "test:build": "npm run build:prod && npx serve dist",
+    "test:api": "node scripts/test-api.js",
+    "clean": "rm -rf dist node_modules package-lock.json"
+  }
+}

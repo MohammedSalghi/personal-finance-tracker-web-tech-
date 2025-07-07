@@ -5,9 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:prod": "NODE_ENV=production vue-cli-service build",
+    "build:prod": "cross-env NODE_ENV=production vue-cli-service build",
     "deploy:vercel": "npm run build:prod && vercel --prod",
-    "preview": "npm run build && npx serve dist"
+    "preview": "npm run build && npx serve dist",
+    "test:api": "node scripts/test-api.js"
   },
   "dependencies": {
     "axios": "^1.10.0",
@@ -22,6 +23,7 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "cross-env": "^7.0.3",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0"
   }

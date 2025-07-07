@@ -1,20 +1,12 @@
 <?php
-header("Access-Control-Allow-Origin: https://ornate-nasturtium-e736ab.netlify.app");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Credentials: true");
-
-// Handle preflight OPTIONS request
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit();
-}
+// Load CORS configuration
+require_once __DIR__ . '/config/cors.php';
 
 header("Content-Type: application/json");
 
 try {
     // Check database connection
-    require_once '../config/database-production.php';
+    require_once __DIR__ . '/config/database.php';
     $database = new DatabaseConfig();
     $db = $database->getConnection();
     

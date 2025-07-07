@@ -1,10 +1,33 @@
 <?php
 class Database {
-    private $host = 'localhost';
-    private $db_name = 'personal_finance_tracker';
-    private $username = 'root';
-    private $password = '';
+    private $host;
+    private $db_name;
+    private $username;
+    private $password;
     private $conn;
+
+    public function __construct() {
+        // Use environment variables for production, fallback to localhost for development
+        $this->host = $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?? 'localhost';
+        $this->db_name = $_ENV['DB_NAME'] ?? getenv('DB_NAME') ?? $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL') ?? 'personal_finance_tracker';
+        $this->username = $_ENV['DB_USER'] ?? getenv('DB_USER') ?? 'root';
+        $this->password = $_ENV['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ?? '';
+        
+        // Handle Render's DATABASE_URL format
+        if (isset($_ENV['DATABASE_URL']) || getenv('DATABASE_URL')) {
+            $this->parseDatabaseUrl($_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL'));
+        }
+    }
+
+    private function parseDatabaseUrl($url) {
+        $parsed = parse_url($url);
+        if ($parsed) {
+            $this->host = $parsed['host'];
+            $this->db_name = ltrim($parsed['path'], '/');
+            $this->username = $parsed['user'];
+            $this->password = $parsed['pass'];
+        }
+    }
 
     public function getConnection() {
         $this->conn = null;

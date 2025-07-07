@@ -25,8 +25,17 @@
 
 [build]
   publish = "dist"
-  command = "npm run build"
+  command = "npm install && npm run build:prod"
   functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "18"
+  NPM_VERSION = "9"
+  VUE_APP_API_BASE_URL = "https://your-backend-url.up.railway.app/api/transactions"
+
+[context.production]
+  environment = { VUE_APP_ENVIRONMENT = "production", VUE_APP_DEBUG = "false" }
+
+[context.deploy-preview]
+  command = "npm install && npm run build"
+  environment = { VUE_APP_ENVIRONMENT = "staging" }

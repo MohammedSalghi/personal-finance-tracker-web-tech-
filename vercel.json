@@ -1,4 +1,8 @@
 {
+  "version": 2,
+  "name": "personal-finance-tracker",
+  "buildCommand": "npm run build:prod",
+  "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/(.*)",
@@ -7,12 +11,14 @@
   ],
   "headers": [
     {
-      "source": "/api/(.*)",
+      "source": "/static/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     }
-  ]
+  ],
+  "env": {
+    "VUE_APP_ENVIRONMENT": "production",
+    "NODE_ENV": "production"
+  }
 }

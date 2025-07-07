@@ -1,0 +1,43 @@
+version: 1
+services:
+  - type: web
+    name: personal-finance-tracker-backend
+    runtime: php
+    rootDir: ./finance-backend
+    plan: free
+    buildCommand: composer install --no-dev
+    startCommand: php -S 0.0.0.0:$PORT -t .
+    healthCheckPath: /health.php
+    envVars:
+      - key: DB_HOST
+        fromService:
+          type: pserv
+          name: personal-finance-tracker-db
+          property: host
+      - key: DB_NAME
+        fromService:
+          type: pserv
+          name: personal-finance-tracker-db
+          property: database
+      - key: DB_USER
+        fromService:
+          type: pserv
+          name: personal-finance-tracker-db
+          property: user
+      - key: DB_PASSWORD
+        fromService:
+          type: pserv
+          name: personal-finance-tracker-db
+          property: password
+      - key: DB_PORT
+        fromService:
+          type: pserv
+          name: personal-finance-tracker-db
+          property: port
+
+  - type: pserv
+    name: personal-finance-tracker-db
+    runtime: postgresql
+    plan: free
+    databaseName: personal_finance_tracker
+    databaseUser: finance_user

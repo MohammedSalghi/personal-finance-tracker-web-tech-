@@ -39,9 +39,9 @@ class Database {
                 // Parse DATABASE_URL for PostgreSQL
                 $this->conn = new PDO($database_url);
             } else {
-                // Use individual environment variables for MySQL
+                // Use individual environment variables for PostgreSQL
                 $this->conn = new PDO(
-                    "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4",
+                    "pgsql:host=" . $this->host . ";port=5432;dbname=" . $this->db_name,
                     $this->username,
                     $this->password,
                     [

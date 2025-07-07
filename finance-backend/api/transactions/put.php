@@ -1,12 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: https://ornate-nasturtium-e736ab.netlify.app");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Credentials: true");
-
-// Handle preflight OPTIONS request
-if (<?php
-header("Access-Control-Allow-Origin: https://ornate-nasturtium-e736ab.netlify.app");
+header("Access-Control-Allow-Origin: https://personal-finance-tracker-web-tech-vert.vercel.app");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");

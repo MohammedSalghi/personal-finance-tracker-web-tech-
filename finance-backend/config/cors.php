@@ -7,7 +7,7 @@ class CORSConfig {
         $allowedOrigins = [
             'http://localhost:8080',
             'http://localhost:3000',
-            'https://ornate-nasturtium-e736ab.netlify.app',
+            'https://personal-finance-tracker-web-tech-vert.vercel.app',
             'https://personal-finance-tracker-web-tech.netlify.app',
             // Add your actual Netlify/Vercel URL here when deployed
         ];

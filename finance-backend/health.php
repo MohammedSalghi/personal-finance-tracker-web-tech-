@@ -2,6 +2,9 @@
 // Load CORS configuration
 require_once __DIR__ . '/config/cors.php';
 
+// Set CORS headers
+CORSConfig::setHeaders();
+
 header("Content-Type: application/json");
 
 try {

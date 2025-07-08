@@ -37,12 +37,13 @@ class Database {
             
             if ($database_url) {
                 // For PostgreSQL, use the full DATABASE_URL with proper format
-                // Convert postgresql:// to pgsql://
+                // Convert postgresql:// to pgsql:// for PDO
                 $pdo_url = str_replace('postgresql://', 'pgsql://', $database_url);
                 $this->conn = new PDO($pdo_url, null, null, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                     PDO::ATTR_EMULATE_PREPARES => false,
+                    PDO::ATTR_TIMEOUT => 30
                 ]);
             } else {
                 // Use individual environment variables for PostgreSQL
@@ -55,9 +56,14 @@ class Database {
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                         PDO::ATTR_EMULATE_PREPARES => false,
+                        PDO::ATTR_TIMEOUT => 30
                     ]
                 );
             }
+            
+            // Test the connection
+            $this->conn->query("SELECT 1");
+            
         } catch(PDOException $exception) {
             error_log("Database connection error: " . $exception->getMessage());
             error_log("Database URL: " . ($database_url ? 'SET' : 'NOT SET'));
@@ -65,13 +71,8 @@ class Database {
             error_log("Database: " . ($this->db_name ?? 'NOT SET'));
             error_log("Username: " . ($this->username ?? 'NOT SET'));
             
-            http_response_code(500);
-            echo json_encode([
-                'error' => true,
-                'message' => 'Database connection failed',
-                'details' => $exception->getMessage()
-            ]);
-            exit();
+            // Don't echo JSON here as it will interfere with other responses
+            throw $exception;
         }
         
         return $this->conn;

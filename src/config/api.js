@@ -1,6 +1,6 @@
 // API Configuration - Use environment variables
 const API_CONFIG = {
-  baseURL: process.env.VUE_APP_API_BASE_URL || 'http://localhost/finance-tracker/finance-backend/api/transactions',
+  baseURL: process.env.VUE_APP_API_BASE_URL || 'https://personal-finance-tracker-web-tech-b6jl.onrender.com/api/transactions',
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',

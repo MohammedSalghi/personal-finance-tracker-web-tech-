@@ -19,7 +19,29 @@
 
 ### 🎉 **YOUR APP IS NOW LIVE AND WORKING!**
 
-**You're now connected to PostgreSQL! Follow these commands:**
+## 🔧 **IMPORTANT: CORS Issue Fixed!**
+
+**The "Network error" was caused by incorrect CORS headers in the backend API files.**
+
+✅ **FIXED**: Updated all API endpoints to use the correct Vercel frontend URL  
+✅ **PUSHED**: Changes pushed to GitHub  
+✅ **DEPLOYING**: Render is automatically redeploying the backend with the fix
+
+### ⏰ **Wait for Backend Redeploy (2-3 minutes)**
+
+**In Render Dashboard:**
+1. Go to your backend service: `https://dashboard.render.com`
+2. Click on your "personal-finance-tracker-web-tech" service
+3. Wait for the deployment to show "Live" status
+4. You'll see the deployment logs updating
+
+### 🧪 **Then Test Your App:**
+1. **Wait for Render to finish redeploying** (watch the logs)
+2. **Refresh your frontend**: [https://personal-finance-tracker-web-tech-vert.vercel.app](https://personal-finance-tracker-web-tech-vert.vercel.app)
+3. **Try adding a transaction** - it should work now!
+
+### 📋 **What was the issue?**
+The API endpoints were still configured for the old Netlify URL instead of your new Vercel URL. This prevented the frontend from communicating with the backend due to CORS (Cross-Origin Resource Sharing) restrictions.
 
 ## 🔧 STEP-BY-STEP: Create Table in psql
 

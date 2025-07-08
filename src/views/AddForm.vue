@@ -142,7 +142,7 @@ export default {
         console.log('💾 All users will share the same database');
         
         // Use our PHP backend API with CORS headers
-        const API_URL = process.env.VUE_APP_API_BASE_URL || 'https://personal-finance-tracker-web-tech-b6jl.onrender.com/api/transactions/post.php';
+        const API_URL = 'https://personal-finance-tracker-web-tech-b6jl.onrender.com/api/transactions/post.php';
         
         try {
           // Create new transaction

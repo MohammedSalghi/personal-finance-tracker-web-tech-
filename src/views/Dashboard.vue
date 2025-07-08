@@ -131,7 +131,7 @@ export default {
         console.log('🌐 === LOADING FROM SHARED DATABASE ===');
         console.log('👥 All users share the same data');
         
-        const API_URL = process.env.VUE_APP_API_BASE_URL || 'https://personal-finance-tracker-web-tech-b6jl.onrender.com/api/transactions/get.php';
+        const API_URL = 'https://personal-finance-tracker-web-tech-b6jl.onrender.com/api/transactions/get.php';
         
         try {
           console.log('📡 Fetching shared transactions...');

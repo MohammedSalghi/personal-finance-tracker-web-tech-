@@ -151,7 +151,7 @@ export default {
             amount: parseFloat(this.form.amount),
             category: this.form.category,
             date: this.form.date,
-            note: this.form.note || '',
+            description: this.form.note || '',
             created_at: new Date().toISOString()
           };
           
@@ -203,7 +203,7 @@ export default {
               amount: parseFloat(this.form.amount),
               category: this.form.category,
               date: this.form.date,
-              note: this.form.note || '',
+              description: this.form.note || '',
               created_at: new Date().toISOString()
             };
             

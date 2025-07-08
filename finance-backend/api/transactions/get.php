@@ -25,7 +25,7 @@ if (file_exists('../../config/database-production.php') && getenv('APP_ENV') ===
 
 try {
     // ✅ Get all transactions
-    $query = "SELECT id, type, amount, category, note, date FROM transactions ORDER BY date DESC, id DESC";
+    $query = "SELECT id, type, amount, category, description, date FROM transactions ORDER BY date DESC, id DESC";
     $stmt = $db->prepare($query);
     $stmt->execute();
 
@@ -33,12 +33,12 @@ try {
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $transactions[] = [
-            'id'       => (int) $row['id'],
-            'type'     => $row['type'],
-            'amount'   => (float) $row['amount'],
-            'category' => $row['category'],
-            'note'     => $row['note'],
-            'date'     => $row['date']
+            'id'          => (int) $row['id'],
+            'type'        => $row['type'],
+            'amount'      => (float) $row['amount'],
+            'category'    => $row['category'],
+            'description' => $row['description'],
+            'date'        => $row['date']
         ];
     }
 

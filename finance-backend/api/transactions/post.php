@@ -57,15 +57,15 @@ try {
     $db = $database->getConnection();
 
     // ✅ Prepare insert query
-    $query = "INSERT INTO transactions (type, amount, category, note, date) VALUES (:type, :amount, :category, :note, :date)";
+    $query = "INSERT INTO transactions (type, amount, category, description, date) VALUES (:type, :amount, :category, :description, :date)";
     $stmt = $db->prepare($query);
 
     // ✅ Bind parameters
-    $note = $data->note ?? '';
+    $description = $data->description ?? $data->note ?? '';
     $stmt->bindParam(':type', $data->type);
     $stmt->bindParam(':amount', $data->amount);
     $stmt->bindParam(':category', $data->category);
-    $stmt->bindParam(':note', $note);
+    $stmt->bindParam(':description', $description);
     $stmt->bindParam(':date', $data->date);
 
     // ✅ Execute query
@@ -82,7 +82,7 @@ try {
                 'type' => $data->type,
                 'amount' => (float) $data->amount,
                 'category' => $data->category,
-                'note' => $data->note ?? '',
+                'description' => $data->description ?? $data->note ?? '',
                 'date' => $data->date
             ]
         ]);

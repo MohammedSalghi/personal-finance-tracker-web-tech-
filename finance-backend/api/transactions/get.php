@@ -24,9 +24,6 @@ if (file_exists('../../config/database-production.php') && getenv('APP_ENV') ===
 }
 
 try {
-    $database = new Database();
-    $db = $database->getConnection();
-
     // ✅ Get all transactions
     $query = "SELECT id, type, amount, category, note, date FROM transactions ORDER BY date DESC, id DESC";
     $stmt = $db->prepare($query);

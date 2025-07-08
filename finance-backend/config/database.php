@@ -60,6 +60,11 @@ class Database {
             }
         } catch(PDOException $exception) {
             error_log("Database connection error: " . $exception->getMessage());
+            error_log("Database URL: " . ($database_url ? 'SET' : 'NOT SET'));
+            error_log("Host: " . ($this->host ?? 'NOT SET'));
+            error_log("Database: " . ($this->db_name ?? 'NOT SET'));
+            error_log("Username: " . ($this->username ?? 'NOT SET'));
+            
             http_response_code(500);
             echo json_encode([
                 'error' => true,

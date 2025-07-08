@@ -48,7 +48,7 @@ export default {
       if (confirm("Are you sure you want to clear all transactions?")) {
         try {
           await axios.delete(
-            `${process.env.VUE_APP_API_BASE_URL}/delete_all.php`
+            `https://personal-finance-tracker-web-tech-b6jl.onrender.com/api/transactions/delete_all.php`
           );
           alert("✅ All transactions cleared!");
           location.reload(); // Or emit an event to refresh only

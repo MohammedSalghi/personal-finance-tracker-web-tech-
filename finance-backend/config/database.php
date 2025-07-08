@@ -52,10 +52,12 @@ class Database {
                 );
             }
         } catch(PDOException $exception) {
+            error_log("Database connection error: " . $exception->getMessage());
             http_response_code(500);
             echo json_encode([
                 'error' => true,
-                'message' => 'Database connection failed'
+                'message' => 'Database connection failed',
+                'details' => $exception->getMessage()
             ]);
             exit();
         }

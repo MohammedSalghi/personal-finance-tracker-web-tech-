@@ -36,12 +36,19 @@ class Database {
             $database_url = $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL');
             
             if ($database_url) {
-                // Parse DATABASE_URL for PostgreSQL
-                $this->conn = new PDO($database_url);
+                // For PostgreSQL, use the full DATABASE_URL with proper format
+                // Convert postgresql:// to pgsql://
+                $pdo_url = str_replace('postgresql://', 'pgsql://', $database_url);
+                $this->conn = new PDO($pdo_url, null, null, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ]);
             } else {
                 // Use individual environment variables for PostgreSQL
+                $port = $_ENV['DB_PORT'] ?? getenv('DB_PORT') ?? '5432';
                 $this->conn = new PDO(
-                    "pgsql:host=" . $this->host . ";port=5432;dbname=" . $this->db_name,
+                    "pgsql:host=" . $this->host . ";port=" . $port . ";dbname=" . $this->db_name,
                     $this->username,
                     $this->password,
                     [

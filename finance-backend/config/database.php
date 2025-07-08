@@ -33,13 +33,24 @@ class Database {
         
         try {
             // Check if DATABASE_URL is available (Render PostgreSQL)
-            $database_url = $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL');
+            $database_url = getenv('DATABASE_URL') ?: $_ENV['DATABASE_URL'] ?? null;
             
             if ($database_url) {
-                // For PostgreSQL, use the full DATABASE_URL with proper format
-                // Convert postgresql:// to pgsql:// for PDO
-                $pdo_url = str_replace('postgresql://', 'pgsql://', $database_url);
-                $this->conn = new PDO($pdo_url, null, null, [
+                // Parse DATABASE_URL manually for better error handling
+                $parsed = parse_url($database_url);
+                if ($parsed === false) {
+                    throw new Exception("Invalid DATABASE_URL format");
+                }
+                
+                $host = $parsed['host'] ?? 'localhost';
+                $port = $parsed['port'] ?? 5432;
+                $database = ltrim($parsed['path'], '/');
+                $username = $parsed['user'] ?? '';
+                $password = $parsed['pass'] ?? '';
+                
+                $dsn = "pgsql:host={$host};port={$port};dbname={$database}";
+                
+                $this->conn = new PDO($dsn, $username, $password, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                     PDO::ATTR_EMULATE_PREPARES => false,
@@ -47,31 +58,27 @@ class Database {
                 ]);
             } else {
                 // Use individual environment variables for PostgreSQL
-                $port = $_ENV['DB_PORT'] ?? getenv('DB_PORT') ?? '5432';
-                $this->conn = new PDO(
-                    "pgsql:host=" . $this->host . ";port=" . $port . ";dbname=" . $this->db_name,
-                    $this->username,
-                    $this->password,
-                    [
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                        PDO::ATTR_EMULATE_PREPARES => false,
-                        PDO::ATTR_TIMEOUT => 30
-                    ]
-                );
+                $host = getenv('DB_HOST') ?: $_ENV['DB_HOST'] ?? $this->host;
+                $port = getenv('DB_PORT') ?: $_ENV['DB_PORT'] ?? '5432';
+                $database = getenv('DB_NAME') ?: $_ENV['DB_NAME'] ?? $this->db_name;
+                $username = getenv('DB_USER') ?: $_ENV['DB_USER'] ?? $this->username;
+                $password = getenv('DB_PASSWORD') ?: $_ENV['DB_PASSWORD'] ?? $this->password;
+                
+                $dsn = "pgsql:host={$host};port={$port};dbname={$database}";
+                
+                $this->conn = new PDO($dsn, $username, $password, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                    PDO::ATTR_TIMEOUT => 30
+                ]);
             }
             
             // Test the connection
-            $this->conn->query("SELECT 1");
+            $this->conn->exec("SELECT 1");
             
-        } catch(PDOException $exception) {
+        } catch(Exception $exception) {
             error_log("Database connection error: " . $exception->getMessage());
-            error_log("Database URL: " . ($database_url ? 'SET' : 'NOT SET'));
-            error_log("Host: " . ($this->host ?? 'NOT SET'));
-            error_log("Database: " . ($this->db_name ?? 'NOT SET'));
-            error_log("Username: " . ($this->username ?? 'NOT SET'));
-            
-            // Don't echo JSON here as it will interfere with other responses
             throw $exception;
         }
         
